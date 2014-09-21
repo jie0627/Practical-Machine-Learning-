@@ -16,34 +16,21 @@ Columns1 <- !apply(training, 2, function(x) sum(is.na(x)) > treshold  || sum(x==
 training <- training[, Columns1]
 ```
 
-I Partition rows into training and crossvalidation
+I use random forest method.
 ```{r}
-inTrain <- createDataPartition(training$classe, p = 0.6)[[1]]
-cv <- training[-inTrain,]
-training <- training[ inTrain,]
-inTrain <- createDataPartition(cv$classe, p = 0.75)[[1]]
-cv_test <- cv[ -inTrain,]
-cv <- cv[inTrain,]
+random.forest <- train(training.train[,-57],
+                       training.train$classe,
+                       tuneGrid=data.frame(mtry=3),
+                       trControl=trainControl(method="none")
+                       )
+                       
 ```
 
-I train models, pridict and show confusion matrices
+I compare the results from the predition with those from the actual data.
 ```{r}
-model1 <- train(classe ~ ., data=training, method="gbm")
-model2 <- train(classe ~ ., data=training, method="lda")
-predit1 <- predict(model1, cv)
-predit2 <- predict(model2, cv)
-confusionMatrix(predit1, cv$classe)
-confusionMatrix(predit2, cv$classe)
+confusionMatrix(predict(random.forest,
+                        newdata=training.test[,-57]),
+                training.test$classe
+                )
 ```
 
-I show in-sample error and out-of-sample error
-preditDF <- data.frame(predit1, predit2, classe=cv$classe)
-combineModFit <- train(classe ~ ., method="rf", data=preditDF)
-combPredIn <- predict(combModFit, predDF)
-confusionMatrix(combPredIn, predDF$classe)
-predDF <- data.frame(pred2, pred3, classe=crossv_test$classe)
-
-I Provide error reports for both training and test data sets.
-```{r}
-
-```

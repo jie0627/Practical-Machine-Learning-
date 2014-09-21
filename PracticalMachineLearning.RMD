@@ -2,18 +2,35 @@
 Practical Machine Learning Course Project
 ==========================================
 
- Introduction
----------------------------------
- I use the random forest method to estimate features for the Human Activity Recognition data set from Groupware. 
 
- Data
----------------------------------
- I loaded caret package, then the data in R.
- 
- I loaded the  training and test data sets
+ I load the data in R (including both training and test data sets).
  ```{r}
  training = read.csv("pml-training.csv", header = TRUE)
  testing = read.csv("pml-testing.csv", header = TRUE)
  ```
  
-I checked for columns with a high percent of data that is either NA or "", and  remove entire NA columns, and apply it to data frames.
+I look up columns with a high percent of data that is either NA or "", remove entire NA columns, and apply it to data frames.
+```{r}
+#Remove columns with more than the treshold of NA or "" values
+Columns1 <- !apply(training, 2, function(x) sum(is.na(x)) > treshold  || sum(x=="") > treshold)
+training <- training[, Columns1]
+```
+
+I Partition rows into training and crossvalidation
+```{r}
+inTrain <- createDataPartition(training$classe, p = 0.6)[[1]]
+crossv <- training[-inTrain,]
+training <- training[ inTrain,]
+inTrain <- createDataPartition(crossv$classe, p = 0.75)[[1]]
+crossv_test <- crossv[ -inTrain,]
+crossv <- crossv[inTrain,]
+```
+
+I Provide error reports for both training and test data sets.
+```{r}
+predictions1 <- predict(rf, newdata=training)
+confusionMatrix(predictions1,training$classe)
+
+predictions2 <- predict(rf, newdata=testing)
+confusionMatrix(predictions2,testing$classe)
+```

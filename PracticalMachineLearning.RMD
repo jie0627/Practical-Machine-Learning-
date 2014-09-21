@@ -18,8 +18,8 @@ training <- training[, Columns1]
 
 I use random forest method.
 ```{r}
-random.forest <- train(training.train[,-57],
-                       training.train$classe,
+random.forest <- train(training[,-57],
+                       training$classe,
                        tuneGrid=data.frame(mtry=3),
                        trControl=trainControl(method="none")
                        )
@@ -29,8 +29,8 @@ random.forest <- train(training.train[,-57],
 I compare the results from the predition with those from the actual data.
 ```{r}
 confusionMatrix(predict(random.forest,
-                        newdata=training.test[,-57]),
-                training.test$classe
+                        newdata=test[,-57]),
+                test$classe
                 )
 ```
 

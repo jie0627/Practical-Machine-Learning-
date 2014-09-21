@@ -2,8 +2,13 @@
 Practical Machine Learning Course Project
 ==========================================
 
+I load caret and randomForest package.
+ ```{r}
+library(caret)
+library(randomForest)
+ ```
 
- I load the data in R (including both training and test data sets).
+I load the data in R (including both training and test data sets).
  ```{r}
  training = read.csv("pml-training.csv", header = TRUE)
  testing = read.csv("pml-testing.csv", header = TRUE)

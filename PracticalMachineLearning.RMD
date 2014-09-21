@@ -1,4 +1,10 @@
  
- 
- 
+ Introduction
+ -------------------
+ I use the random forest method to estimate features for the Human Activity Recognition data set from Groupware. 
+
+ Data
+ --------------
  I loaded caret package, then the data in R.
+ 
+ 

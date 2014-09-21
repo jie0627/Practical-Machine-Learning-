@@ -1,4 +1,7 @@
-Practical-Machine-Learning-
+Practical Machine Learning Course Project
 ===========================
 
-Practical Machine Learning 
+I use the random forest method to estimate features for the Human Activity Recognition data set from Groupware. 
+
+
+

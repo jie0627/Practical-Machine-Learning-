@@ -19,18 +19,31 @@ training <- training[, Columns1]
 I Partition rows into training and crossvalidation
 ```{r}
 inTrain <- createDataPartition(training$classe, p = 0.6)[[1]]
-crossv <- training[-inTrain,]
+cv <- training[-inTrain,]
 training <- training[ inTrain,]
-inTrain <- createDataPartition(crossv$classe, p = 0.75)[[1]]
-crossv_test <- crossv[ -inTrain,]
-crossv <- crossv[inTrain,]
+inTrain <- createDataPartition(cv$classe, p = 0.75)[[1]]
+cv_test <- cv[ -inTrain,]
+cv <- cv[inTrain,]
 ```
+
+I train models, pridict and show confusion matrices
+```{r}
+model1 <- train(classe ~ ., data=training, method="gbm")
+model2 <- train(classe ~ ., data=training, method="lda")
+predit1 <- predict(model1, cv)
+predit2 <- predict(model2, cv)
+confusionMatrix(predit1, cv$classe)
+confusionMatrix(predit2, cv$classe)
+```
+
+I show in-sample error and out-of-sample error
+preditDF <- data.frame(predit1, predit2, classe=cv$classe)
+combineModFit <- train(classe ~ ., method="rf", data=preditDF)
+combPredIn <- predict(combModFit, predDF)
+confusionMatrix(combPredIn, predDF$classe)
+predDF <- data.frame(pred2, pred3, classe=crossv_test$classe)
 
 I Provide error reports for both training and test data sets.
 ```{r}
-predictions1 <- predict(rf, newdata=training)
-confusionMatrix(predictions1,training$classe)
 
-predictions2 <- predict(rf, newdata=testing)
-confusionMatrix(predictions2,testing$classe)
 ```

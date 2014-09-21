@@ -3,11 +3,17 @@ Practical Machine Learning Course Project
 ==========================================
 
  Introduction
- -------------------
+---------------------------------
  I use the random forest method to estimate features for the Human Activity Recognition data set from Groupware. 
 
  Data
- --------------
+---------------------------------
  I loaded caret package, then the data in R.
  
+ I loaded the  training and test data sets
+ ```{r}
+ training = read.csv("pml-training.csv", header = TRUE)
+ testing = read.csv("pml-testing.csv", header = TRUE)
+ ```
  
+I checked for columns with a high percent of data that is either NA or "", and  remove entire NA columns, and apply it to data frames.

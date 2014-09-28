@@ -22,4 +22,21 @@ Columns1 <- !apply(training, 2, function(x) sum(is.na(x)) > treshold  || sum(x==
 training <- training[, Columns1]
 ```
 
+I use random forest method.
+```{r}
+random.forest <- train(training[,-57],
+                       training$classe,
+                       tuneGrid=data.frame(mtry=3),
+                       trControl=trainControl(method="none")
+                       )
+                       
+```
+
+I compare the results from the predition with those from the actual data.
+```{r}
+confusionMatrix(predict(random.forest,
+                        newdata=test[,-57]),
+                test$classe
+                )
+```
 <\html>

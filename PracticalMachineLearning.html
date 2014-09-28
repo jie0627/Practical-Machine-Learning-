@@ -1,2 +1,25 @@
 
-<html>
+<\html>
+Practical Machine Learning Course Project
+==========================================
+
+I load caret and randomForest package.
+ ```{r}
+library(caret)
+library(randomForest)
+ ```
+
+I load the data in R (including both training and test data sets).
+ ```{r}
+ training = read.csv("pml-training.csv", header = TRUE)
+ testing = read.csv("pml-testing.csv", header = TRUE)
+ ```
+ 
+I look up columns with a high percent of data that is either NA or "", remove entire NA columns, and apply it to data frames.
+```{r}
+#Remove columns with more than the treshold of NA or "" values
+Columns1 <- !apply(training, 2, function(x) sum(is.na(x)) > treshold  || sum(x=="") > treshold)
+training <- training[, Columns1]
+```
+
+<\html>
